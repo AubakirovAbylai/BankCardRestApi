@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003
+      author: abylai
+      changes:
+        - createTable:
+            tableName: card
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: number
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: expiration
+                  type: date
+
+              - column:
+                  name: status
+                  type: VARCHAR(50)
+
+              - column:
+                  name: balance
+                  type: NUMERIC(19,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: person_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_card_person
+                    referencedTableName: person
+                    referencedColumnNames: id
