@@ -1,5 +1,6 @@
 package kz.abylai.bankcards.service;
 
+import kz.abylai.bankcards.entity.Person;
 import kz.abylai.bankcards.entity.Transaction;
 import kz.abylai.bankcards.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,8 @@ import java.util.List;
 public class TransactionService {
     private TransactionRepository transactionRepository;
 
-    public List<Transaction> findAll(){
-        return transactionRepository.findAll();
+    public List<Transaction> findAllByPerson(Person person){
+        return transactionRepository.findAllByPerson(person);
     }
 
     public Transaction findById(Long id) {

@@ -3,17 +3,20 @@ package kz.abylai.bankcards.service;
 import kz.abylai.bankcards.dto.CardDTO;
 import kz.abylai.bankcards.entity.Card;
 import kz.abylai.bankcards.entity.Person;
+import kz.abylai.bankcards.entity.Transaction;
 import kz.abylai.bankcards.enums.CardStatus;
 import kz.abylai.bankcards.exception.CardNotFoundException;
 import kz.abylai.bankcards.exception.InsufficientFundsException;
 import kz.abylai.bankcards.exception.InvalidTransferException;
 import kz.abylai.bankcards.repository.CardRepository;
+import kz.abylai.bankcards.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -23,6 +26,7 @@ import java.util.Random;
 public class CardService {
     private final CardRepository cardRepository;
     private CardStatus cardStatus;
+    private final TransactionRepository transactionRepository;
 
     public List<Card> findAll() {
         return cardRepository.findAll();
@@ -80,6 +84,14 @@ public class CardService {
 
         card.setBalance(card.getBalance().add(amount));
         cardRepository.save(card);
+
+        Transaction transaction = new Transaction();
+        transaction.setFromCard(null);
+        transaction.setToCard(card);
+        transaction.setAmount(amount);
+        transaction.setDate(LocalDateTime.now());
+
+        transactionRepository.save(transaction);
     }
 
     @Transactional
@@ -104,6 +116,14 @@ public class CardService {
 
         cardRepository.save(sender);
         cardRepository.save(receiver);
+
+        Transaction transaction = new Transaction();
+        transaction.setFromCard(sender);
+        transaction.setToCard(receiver);
+        transaction.setAmount(amount);
+        transaction.setDate(LocalDateTime.now());
+
+        transactionRepository.save(transaction);
     }
 
 }
