@@ -30,11 +30,14 @@ public class Transaction {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Person person;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "from_card_id", referencedColumnName = "id")
     private Card fromCard;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "to_card_id", referencedColumnName = "id")
     private Card toCard;
 }

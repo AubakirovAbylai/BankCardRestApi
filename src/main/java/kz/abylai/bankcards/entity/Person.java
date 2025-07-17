@@ -1,5 +1,6 @@
 package kz.abylai.bankcards.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -41,7 +42,4 @@ public class Person {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
-
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Card> cards;
 }

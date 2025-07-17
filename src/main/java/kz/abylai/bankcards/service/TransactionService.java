@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class TransactionService {
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
     public List<Transaction> findAllByPerson(Person person){
         return transactionRepository.findAllByPerson(person);

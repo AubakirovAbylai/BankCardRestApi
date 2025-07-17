@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/person")
+@RequestMapping("/api/people")
 public class PersonController {
     private final PersonService personService;
     private final ModelMapper modelMapper;
@@ -24,6 +24,7 @@ public class PersonController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public PersonResponse getAllPersons() {
+        System.out.println(personService.findAll());
         return new PersonResponse(personService.findAll().stream()
                 .map(this::convertToPersonDTO)
                 .collect(Collectors.toList()));
@@ -32,8 +33,7 @@ public class PersonController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/new")
     public void createPerson(@RequestBody PersonDTO personDTO) {
-        Person person = convertToPerson(personDTO);
-        personService.createPerson(person);
+        personService.createPerson(personDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -43,13 +43,7 @@ public class PersonController {
     }
 
     private PersonDTO convertToPersonDTO(Person person) {
-        PersonDTO dto = new PersonDTO();
-        dto.setFullName(person.getFullName());
-        dto.setNumberPhone(person.getNumberPhone());
-        List<CardDTO> cardDTO = person.getCards().stream()
-                .map(this::convertToCardDTO).collect(Collectors.toList());
-        dto.setCardsDTO(cardDTO);
-        return dto;
+        return modelMapper.map(person, PersonDTO.class);
     }
 
     private  CardDTO convertToCardDTO(Card card) {

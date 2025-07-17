@@ -1,6 +1,7 @@
 package kz.abylai.bankcards.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import kz.abylai.bankcards.dto.PersonDTO;
 import kz.abylai.bankcards.entity.Person;
 import kz.abylai.bankcards.repository.PersonRepository;
 import kz.abylai.bankcards.repository.RoleRepository;
@@ -14,8 +15,8 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class PersonService {
-    private PersonRepository personRepository;
-    private RoleRepository roleRepository;
+    private final PersonRepository personRepository;
+    private final RoleRepository roleRepository;
 
     public List<Person> findAll() {
         return personRepository.findAll();
@@ -33,7 +34,6 @@ public class PersonService {
     public Person updatePerson(Long id, Person person) {
         Person personToBeUpdated = findById(id);
         person.setId(id);
-        person.setCards(personToBeUpdated.getCards());
         return personRepository.save(person);
     }
 
@@ -42,7 +42,13 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 
-    public void createPerson(Person person) {
+    public void createPerson(PersonDTO personDTO) {
+        Person person = new Person();
+        person.setFullName(personDTO.getFullName());
+        person.setNumberPhone(personDTO.getNumberPhone());
+        person.setPassword("password");
+        person.setRole(roleRepository.findById(1));
+
         personRepository.save(person);
     }
 }

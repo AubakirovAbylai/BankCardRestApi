@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PersonResponse {
-    private List<PersonDTO> persons;
+    private List<PersonDTO> people;
 }
 
 
